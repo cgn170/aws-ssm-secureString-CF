@@ -32,9 +32,9 @@ Resources:
 
 Outputs:
   UsernameArn:
-    Description: Arn of bitbucket secure username
+    Description: Arn of secure username
     Value: !GetAtt SecureUsername.Arn
 
   PasswordArn:
-    Description: Arn of bitbucket secure passworrd
+    Description: Arn of secure passworrd
     Value: !GetAtt SecurePassword.Arn
