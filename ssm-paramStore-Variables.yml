@@ -1,0 +1,40 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Setup AWS SSM parameters with custom resource
+Parameters:
+User:
+    Description: Service Username, used to connect to something critical.
+    Type: String
+    NoEcho: true
+
+Password:
+    Description: Service password, used to connect to something critical.
+    Type: String
+
+Resources:
+
+  SecureUsername:
+    Type: Custom::paramStoreHelper
+    Properties:
+      Name: "/config/USERNAME"
+      ServiceToken: !ImportValue paramStoreHelper
+      Type: SecureString
+      Value: !Ref User
+      KeyId: !ImportValue KmsKeySSM
+
+  SecurePassword:
+    Type: Custom::paramStoreHelper
+    Properties:
+      Name: "/config/PASSWORD"
+      ServiceToken: !ImportValue paramStoreHelper
+      Type: SecureString
+      Value: !Ref Password
+      KeyId: !ImportValue KmsKeySSM
+
+Outputs:
+  UsernameArn:
+    Description: Arn of bitbucket secure username
+    Value: !GetAtt SecureUsername.Arn
+
+  PasswordArn:
+    Description: Arn of bitbucket secure passworrd
+    Value: !GetAtt SecurePassword.Arn
